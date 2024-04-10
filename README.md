@@ -1,4 +1,4 @@
-# Project Name
+# Privacy-Preserving-Exchange-Mechanism  
 
 This project implements three Zero-Knowledge Proofs (ZKPs) related to the paper titled "Privacy-Preserving Exchange Mechanism and its Application to Energy Market". These ZKPs have been implemented using Noir, a Domain Specific Language (DSL) tailored for SNARK proving systems. Noir is designed to leverage any ACIR-compatible proving system, providing simplicity and familiarity in its syntax, based on Rust.
 
