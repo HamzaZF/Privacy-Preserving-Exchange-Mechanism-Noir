@@ -28,8 +28,10 @@ curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash
 noirup
 ```
 
-That's it! You should now have the latest version of Noir installed and ready to use. Confirm the installation by checking the version with nargo --version.
-
+That's it! You should now have the latest version of Noir installed and ready to use. Confirm the installation by checking the version with :
+```bash
+nargo --version.
+```
 You also have the flexibility to install nightly builds, specific versions, or branches. Refer to the noirup repository for further details.
 
 ## Usage
