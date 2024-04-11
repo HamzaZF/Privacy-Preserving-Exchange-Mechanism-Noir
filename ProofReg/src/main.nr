@@ -1,7 +1,6 @@
 use dep::std;
 use dep::std::collections::vec::Vec;
 mod structs;
-mod hash;
 
 use dep::std::ec::tecurve::affine::{Curve, Point};
 use dep::poseidon2;
@@ -58,22 +57,6 @@ fn OTP_field(g_r_b: Point, plain: (Field, Point, Field), op: u8) -> [Field; 4] {
     C_computed
 }
 
-/*
-use dep::hydra;
-
-fn main() -> pub [Field; 8] { //plains: [Field; 8], key : [Field; 4], iv: [Field;4]
-
-    let plains = [0, 1, 2, 3, 4, 5, 6, 7];
-    let key = [34245092, 1216, 54609, 32945];
-    let nonce = 11561;
-    let iv = [nonce, 432,324,14];
-    let ciphers = hydra::bn254::enc::encrypt(plains, key, iv);
-    let plains = hydra::bn254::dec::decrypt(ciphers, key, iv);
-    hydra::bn254::enc::encrypt(plains, key, iv)
-
-}
-*/
-
 fn hash_point(point: Point) -> Field{
     let point_0 = point.x;
     let point_1 = point.y;
@@ -86,61 +69,6 @@ fn compute_cm(pk: Point, rho: Field, r: Field, T: Field) -> Field{
     let cm_1 = std::hash::poseidon::bn254::hash_2([r, cm_0]);
     let cm = std::hash::poseidon::bn254::hash_2([cm_1, T]);
     cm
-}
-/*
-
-fn get_k(r: [u8; 32], rho: [u8; 32], a_pk: [u8; 32]) -> [u8; 32]{
-    //let cm_0 = std::hash::poseidon::bn254::hash_2([a_pk, rho]);
-    let cm_0 = hash_2(a_pk, rho);
-    let k = hash_2(r, cm_0);
-    //let k = std::hash::poseidon::bn254::hash_2([r, cm_0]);
-    k
-}
-
-*/
-
-fn OTP(g_r_b: Point, plain: (Field, Point, Field)) -> [[u8; 32]; 3] {
-
-    let sk_in = plain.0;
-    let pk_out = plain.1;
-    let b_i = plain.2;
-
-    //sk_in XOR H(g_r_b)
-    let mut hash_g_r_b_bytes: [u8] = hash_point(g_r_b).to_le_bytes(32);
-    let mut sk_in_bytes = (sk_in).to_le_bytes(32);
-
-    let mut sk_in_xor_hash_g_r_b: [u8; 32] = [0; 32];
-
-    for i in 0..32 {
-        sk_in_xor_hash_g_r_b[i] = sk_in_bytes[i] ^ hash_g_r_b_bytes[i];
-    }
-
-    //pk_out XOR H(H(g_r_b))
-    let mut hash_hash_g_r_b_bytes: [u8] = poseidon2::bn254::hash_1([hash_point(g_r_b)]).to_le_bytes(32);
-    let mut pk_out_bytes = hash_point(pk_out).to_le_bytes(32);
-
-    let mut pk_out_xor_hash_hash_g_r_b: [u8; 32] = [0; 32];
-
-    for i in 0..32 {
-        pk_out_xor_hash_hash_g_r_b[i] = pk_out_bytes[i] ^ hash_hash_g_r_b_bytes[i];
-    }
-
-    //b XOR H(H(H(g_r_b)))
-    let mut hash_hash_hash_g_r_b_bytes: [u8] = poseidon2::bn254::hash_1([poseidon2::bn254::hash_1([hash_point(g_r_b)])]).to_le_bytes(32);
-    let mut b_bytes = (b_i).to_le_bytes(32);
-
-    let mut b_xor_hash_hash_hash_g_r_b: [u8; 32] = [0; 32];
-
-    for i in 0..32 {
-        b_xor_hash_hash_hash_g_r_b[i] = b_bytes[i] ^ hash_hash_hash_g_r_b_bytes[i];
-    }
-
-    let mut C_computed : [[u8; 32]; 3] = [[0; 32]; 3];
-    C_computed[0] = sk_in_xor_hash_g_r_b;
-    C_computed[1] = pk_out_xor_hash_hash_g_r_b;
-    C_computed[2] = b_xor_hash_hash_hash_g_r_b;
-
-    C_computed
 }
 
 fn proof<N>(a: structs::a, x: structs::x){
@@ -185,7 +113,6 @@ fn proof<N>(a: structs::a, x: structs::x){
     assert(g_r_b_computed == a.g_r_b);
     std::println("passed");
 }
-
 
 fn main(witness: structs::a, statement: pub structs::x){
     proof(witness, statement);
