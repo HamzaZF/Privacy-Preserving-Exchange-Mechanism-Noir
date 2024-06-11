@@ -5,7 +5,6 @@ use dep::std::ec::tecurve::affine::{Curve, Point};
 
 struct Record {
     pk : Point,
-    //payload_type: u8,
     T: [Field; 2],
     rho: Field,//Field,
     r: Field,
