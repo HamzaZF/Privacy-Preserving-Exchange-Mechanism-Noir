@@ -5,11 +5,10 @@ use dep::std::ec::tecurve::affine::{Curve, Point};
 
 struct Record {
     pk : Point,
-    //payload_type: u8,
     T: Field,
     rho: Field,//Field,
     r: Field,
-    cm: Field, //Poseidon
+    cm: Field,
 }
 
 struct x { //instance
