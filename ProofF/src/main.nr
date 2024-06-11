@@ -97,11 +97,8 @@ fn proof<N>(a: structs::a, x: structs::x){
         let C = C_list[i];
         C_computed[i] = OTP_field(g_r_b_list[i], (C[0], Point::new(C[1], C[2]), C[2]), 1); // 1 for deciphering
     }
-
-    //2) not necessary
-
     
-    //3) compute sn
+    //2) compute sn
 
     for i in 0..g_r_b_list.len() {
         let C = C_computed[i];
@@ -110,13 +107,9 @@ fn proof<N>(a: structs::a, x: structs::x){
         assert(sn_computed == sn_in_list[i]);
     }
 
-    //4) compute the auction
+    //3) not necessary
 
-    //TODO!
-
-    //5) not necessary
-
-    //6) compute cm_out
+    //4) compute cm_out
 
     for i in 0..g_r_b_list.len() {
         let C = C_computed[i];
